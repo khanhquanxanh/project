@@ -1,0 +1,4 @@
+>>> Warning 216 "main.c" Line 410(1,2): Interrupts disabled during call to prevent re-entrancy:  (@PUTCHAR_1_)
+      Memory usage:   ROM=30%      RAM=37% - 39%
+      0 Errors,  1 Warnings.
+Build Successful.

@@ -1,0 +1,275 @@
+#include <main.h>
+char querystring[200];
+float temperature=0,doValue=0,phValue=0,tdsValue=60,turb=8.0;
+//int1 enSim=0;
+//int8 simCount;
+float  buf[20];
+float avgValue, tempph;
+float readPh();
+void batsim808();
+void erase_buffer_sim();
+void time(char *expected_answer,unsigned int16 time1);
+//int1 sendATcommand(char *command, char *expected_answer,unsigned int16 mstimeout);
+void sendData();
+float doArray[]={14.60,14.20,13.81,13.45,13.09,12.76,12.44,12.13,11.83,11.55,11.28,11.02,10.77,10.53,10.29,10.07,9.86,
+9.65,9.45,9.26,9.08,8.90,8.73,8.56,8.40,8.24,8.09,7.95,7.81,7.67,7.54,7.41,7.29,7.17,7.05,6.93,6.82,6.72,6.61,6.51,6.41};
+int8 buff_index=0;
+const unsigned int8 buffer_size =100;
+char c,buffer[buffer_size];
+unsigned int16 sendCount=0;
+int8 simCount;
+int1 enSim;
+const int8 sendDataTime=750;
+#INT_TIMER1                                 // Timer1 interrupt ISR
+void timer1_isr()
+{
+   set_timer1(5536); //1/(48M/16)x60000
+   
+      sendCount++;
+   if (enSim) simCount++;
+}
+#INT_RDA
+void RDA_isr()
+{
+   c=fgetc(UARTSIM);
+   buffer[buff_index]=c;
+   fprintf(UART1,"%c",c);
+   buff_index++;
+}
+void main()
+{
+   setup_adc(ADC_CLOCK_INTERNAL);
+   setup_adc_ports(AN0_TO_AN4);
+   enable_interrupts(INT_RDA);
+   enable_interrupts(GLOBAL);
+   batsim808();
+   fprintf(UART1,"dmmmmmmmmmmmmmmmmmmm\n");
+   
+   //delay_ms(1000);
+   while(TRUE)
+   {
+        
+      
+       temperature = ds1820_read();  
+       fprintf(UART1,"TEMP: %2.2f\r\n",temperature);
+       int doConvert= (int)temperature;
+       doValue = doArray[doConvert];
+       fprintf(UART1,"DO: %2.1f\r\n",doValue);
+       phValue=readPh();
+        fprintf(UART1,"pH: %2.1f\r\n",phValue);
+        delay_ms(2000);
+        if (sendCount>=sendDataTime) 
+       {
+         sendCount=0;                 
+         sendData();
+         
+       }
+        
+       //delay_ms(2000);
+   }
+}
+float readPh()
+   {
+      set_adc_channel(3);
+      delay_us(20);
+      for (int s = 0; s < 10; s++)
+      {
+         buf[s] = read_adc();
+         delay_ms(10);
+      }
+      for (int i = 0; i < 9; i++)
+      {
+         for (int j = i + 1; j < 10; j++)
+         {
+            if (buf[i] > buf[j])
+            {
+               tempph = buf[i];
+               buf[i] = buf[j];
+               buf[j] = tempph;
+            }
+         }
+      }
+  avgValue = 0;
+  for (int a = 2; a < 8; a++)
+      avgValue += buf[i];
+      float pHVol = (float)avgValue * 5.0 / 1024 / 6;
+      float phValue1 = -5.70 * pHVol + 21.34;
+      return phValue1;
+}
+void erase_buffer_sim()
+{
+   //xoa bo nho dem (dung de doc phan hoi sim trong ngat)
+   int i;
+   for(i=0;i<buffer_size;i++){ buffer[i]=0x00;}
+   //buff_index=0x00;
+   return;
+}
+/*int1 sendATcommand(char *command, char *expected_answer,unsigned int16 mstimeout)
+{
+   //gui lenh cho sim co timeout
+   int1 answerAT=0;
+   buff_index=0;
+   erase_buffer_sim();
+   //delay_ms(1000);//Delay to be sure no passed commands interfere
+   fprintf(UARTSIM,command);
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(500); //delay doi phan hoi 
+   enSim=1;
+   do
+   {
+      if(strstr(buffer,expected_answer)!=NULL)
+      {
+         answerAT=1;
+      }
+      else answerAT=0;
+   } while((answerAT==0)&&(simCount<mstimeout));
+   enSim=0;
+   simCount=0;
+   return answerAT;
+}*/
+
+void batsim808()
+{
+   //Khoi dong Sim
+   //Cho Module sim khoi dong,tam 15000ms
+   delay_ms(5000);
+   fprintf(UART1,"Bat MODULE SIM:\n"); 
+   fprintf(UART1,"Tat phan hoi sim: ");
+   fprintf(UARTSIM,"ATE0"); //ATE1: bat ATE0:tat phan hoi module sim
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   erase_buffer_sim();
+   fprintf(UART1,"Kiem Tra Module Sim:\n"); 
+   fprintf(UARTSIM,"AT");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(1000);
+   //time("OK",50);
+   
+//!   fprintf(UART1,"Set BAUD");
+//!   sendATcommand("AT+IPR=9600","OK",50);
+   //fprintf(UART1,"Cau hinh SMS:");
+   //sendATcommand("AT+CMGF=1","OK",50);
+   erase_buffer_sim();
+   fprintf(UART1,"CAU HINH GPRS");
+   fprintf(UARTSIM,"AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",100);
+   erase_buffer_sim();
+   //cau hinh gprs
+   fprintf(UART1,"CAU HINH APN");
+   fprintf(UARTSIM,"AT+SAPBR=3,1,\"APN\",\"wap\"");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",100);
+   //fprintf("AT+SAPBR=3,1,\"APN\",\"wap\""); //cau hinh apn cho mang vietnammobile
+   //int answer=0;
+   //answer=sendATcommand("AT+HTTPINIT","OK",150);
+   //if(answer==1)
+   //{
+     // fprintf(UART1,"HTTP PARA CID");
+     // answer=sendATcommand("AT+HTTPPARA=\"CID\",1","OK",500);
+   //}   
+}
+void sendData() //t tds ph do turb
+{
+   erase_buffer_sim();
+   fprintf(UART1,"\r\nSEND DATA\r\n");
+   fprintf(UART1,"BAT GPRS");
+   fprintf(UARTSIM,"AT+SAPBR=1,1");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",350);
+   erase_buffer_sim();
+   
+   fprintf(UART1,"KHOI TAO HTML ");
+   fprintf(UARTSIM,"AT+HTTPINIT");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",150);
+   
+   erase_buffer_sim();
+   
+   fprintf(UART1,"SEND URL: ");
+   sprintf(querystring,"AT+HTTPPARA=\"URL\",\"watervvv.000webhostapp.com/update_data.php?t=%2.1f&tds=%2.1f&do=%2.1f&ph=%2.1f&turb=%2.1f\""
+   ,temperature,tdsValue,doValue,phValue,turb); 
+   fprintf(UART1,querystring);
+   fprintf(UARTSIM,querystring);
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",250);
+   
+   
+   erase_buffer_sim();
+   //delay_ms(2000);
+   fprintf(UART1,"KHOI TAO CID ");
+   fprintf(UARTSIM,"AT+HTTPPARA=\"CID\",1");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(5000);
+   //time("OK",500);
+   
+   
+   erase_buffer_sim();
+   //delay_ms(2000);
+   fprintf(UART1,"BAT DAU THUC HIEN HTHL ");
+   fprintf(UARTSIM,"AT+HTTPACTION=0");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(5000);
+   time("+HTTPACTION: 0,200",250);
+   
+  
+   erase_buffer_sim();
+   //delay_ms(2000);
+   fprintf(UART1,"TAT GPRS ");
+   fprintf(UARTSIM,"AT+SAPBR=0,1");
+   fputc(13,UARTSIM);
+   fputc(10,UARTSIM);
+   delay_ms(2000);
+   //time("OK",350);
+   
+   //erase_buffer_sim();
+   //delay_ms(2000);
+  /* sendATcommand("AT+SAPBR=1,1","OK",350); // bat sim
+   delay_us(20);
+   sendATcommand("AT+HTTPINIT","OK",150);// khoi tao http
+   
+   fprintf(UART1,"SEND URL: ");
+   sprintf(querystring,"AT+HTTPPARA=\"URL\",\"watervvv.000webhostapp.com/update_data.php?t=%2.1f&tds=%2.1f&do=%2.1f&ph=%2.1f&turb=%2.1f\""
+   ,temperature,tdsValue,doValue,phValue,turb);   
+   fprintf(UART1,querystring);
+   sendATcommand(querystring,"OK",250);
+   sendATcommand("AT+HTTPPARA=\"CID\",1","OK",500);//???
+   fprintf(UART1,"HTTP ACTION");
+   sendATcommand("AT+HTTPACTION=0","+HTTPACTION: 0,200",250);// start http
+   
+   fprintf(UART1,"TAT GPRS");
+   sendATcommand("AT+SAPBR=0,1","OK",250); // xong thi tat gprs*/
+
+}
+void time(char *expected_answer,unsigned int16 time1)
+{
+  erase_buffer_sim();
+  int1 answerAT=0;
+  enSim=1;
+  do
+   {
+      if(strstr(buffer,expected_answer)!=NULL)
+      {
+         answerAT=1;
+      }
+      else answerAT=0;
+   } while((answerAT==0)&&(simCount<time1));
+   enSim=0;
+   simCount=0;
+   
+}
+

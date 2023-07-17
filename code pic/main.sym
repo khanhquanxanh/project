@@ -1,0 +1,302 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @INTERRUPT_AREA
+005     @INTERRUPT_AREA
+006     @INTERRUPT_AREA
+007     @INTERRUPT_AREA
+008     @INTERRUPT_AREA
+009     @INTERRUPT_AREA
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017-018 strtok.save
+019-01C _Randseed
+01D-0E4 querystring
+0E5-0E8 temperature
+0E9-0EC doValue
+0ED-0F0 phValue
+0F1-0F4 tdsValue
+0F5-0F8 turb
+0F9-0FC ecVolt
+0FD-100 AnalogAverage
+101-150 buf
+151-154 avgValue
+155-158 tempph
+159-1FC doArray
+1FD     buff_index
+1FE     c
+1FF-262 buffer
+263-264 sendCount
+265     simCount
+266     biendem
+267-272 phone
+273.0   enSim
+274-29B readings
+29C-29D AnalogValueTotal
+29E     index
+29F-2EE wartemp
+2EF-2F0 @sprintf_string
+2F1-2F4 @PRINTF_L32D_1046FPFPF.P1
+2F1     readSensor.doConvert
+2F1-2F4 @PRINTF_L32D_647FPFPF.P1
+2F1     @PSTRINGCN_647.P2
+2F1     erase_buffer_sim.i
+2F1     @PSTRINGCN_1046.P1
+2F1     MAIN.@SCRATCH1
+2F1     @PSTRINGC_647.@SCRATCH1
+2F1     batsim808.@SCRATCH1
+2F1     @PSTRINGC_9600_31766_31767.@SCRATCH1
+2F1     sendData.@SCRATCH1
+2F1     @PSTRINGR_647.@SCRATCH1
+2F1     @PSTRINGR_9600_31766_31767.@SCRATCH1
+2F2-2F3 readTds.sampleTDS
+2F2     ds1820_read.busy
+2F2-2F3 readturb.turbVolt
+2F2     readPh.s
+2F2     @PSTRINGC_647.@SCRATCH2
+2F2     @PSTRINGCN_647.@SCRATCH1
+2F2     erase_buffer_sim.@SCRATCH1
+2F2     @PSTRINGC_9600_31766_31767.@SCRATCH2
+2F2     @PSTRINGCN_1046.@SCRATCH1
+2F2     @PSTRINGR_647.@SCRATCH2
+2F2     @PSTRINGR_9600_31766_31767.@SCRATCH2
+2F3     readPh.i
+2F3     ds1820_read.temp1
+2F3     @PSTRINGCN_647.@SCRATCH2
+2F3     erase_buffer_sim.@SCRATCH2
+2F3     @PSTRINGCN_1046.@SCRATCH2
+2F4     readPh.j
+2F4     ds1820_read.temp2
+2F4-2F5 readTds.temp
+2F4     readturb.@SCRATCH1
+2F5-2F6 ds1820_read.temp3
+2F5     @PRINTF_L32D_647FPFPF.P1
+2F5     @PRINTF_L32D_1046FPFPF.P2
+2F5     readPh.a
+2F5     readturb.@SCRATCH2
+2F6-2F9 readPh.pHVol
+2F6-2F9 @SFTOI.P1
+2F6     @PRINTF_L32D_647FPFPF.@SCRATCH1
+2F6     readturb.@SCRATCH3
+2F6     readTds.@SCRATCH1
+2F6     @PRINTF_L32D_1046FPFPF.@SCRATCH1
+2F7-2FA ds1820_read.result
+2F7     @PRINTF_L32D_647FPFPF.@SCRATCH2
+2F7     readturb.@SCRATCH4
+2F7     readTds.@SCRATCH2
+2F7     @PRINTF_L32D_1046FPFPF.@SCRATCH2
+2F8     @PRINTF_L32D_647FPFPF.@SCRATCH3
+2F8     readTds.@SCRATCH3
+2F8     @PRINTF_L32D_1046FPFPF.@SCRATCH3
+2F9     @PRINTF_L32D_647FPFPF.@SCRATCH4
+2F9     readTds.@SCRATCH4
+2F9     @PRINTF_L32D_1046FPFPF.@SCRATCH4
+2FA-2FD readPh.phValue1
+2FA     @PRINTF_L32D_647FPFPF.@SCRATCH5
+2FA     @PRINTF_L32D_1046FPFPF.@SCRATCH5
+2FB-2FC @SITOF.P1
+2FB     onewire_write.data
+2FB     onewire_read.count
+2FB     onewire_reset.@SCRATCH1
+2FB     ds1820_read.@SCRATCH1
+2FB     @PRINTF_L32D_647FPFPF.@SCRATCH6
+2FB     @PRINTF_L32D_1046FPFPF.@SCRATCH6
+2FC     onewire_write.count
+2FC     onewire_read.data
+2FC     ds1820_read.@SCRATCH2
+2FC     @PRINTF_L32D_647FPFPF.@SCRATCH7
+2FC     @PRINTF_L32D_1046FPFPF.@SCRATCH7
+2FD     @delay_us1.P1
+2FD     ds1820_read.@SCRATCH3
+2FD     @PRINTF_L32D_647FPFPF.@SCRATCH8
+2FD     @PRINTF_L32D_1046FPFPF.@SCRATCH8
+2FE     @SPRINTF.P1
+2FE-301 @FTOSD.P2
+2FE-301 @DIV3232.P3
+2FE     @delay_ms1.P4
+2FE-301 @MULFF.P5
+2FE     ds1820_read.@SCRATCH4
+2FE     readPh.@SCRATCH1
+2FF     readPh.@SCRATCH2
+300-301 @ITOF.P1
+300     readPh.@SCRATCH3
+301     readPh.@SCRATCH4
+302-305 @DIV3232.P1
+302-305 @DIVFF.P2
+302-305 @ADDFF.P3
+302-305 @MULFF.P4
+302-305 @FLT.P5
+302     @FTOSD.@SCRATCH1
+302     readPh.@SCRATCH5
+303     readPh.@SCRATCH6
+306-309 @FLT.P1
+306-309 @DIVFF.P2
+306-309 @ADDFF.P3
+306     @MULFF.@SCRATCH1
+306     @DIV3232.@SCRATCH1
+307     @MULFF.@SCRATCH2
+307     @DIV3232.@SCRATCH2
+308     @MULFF.@SCRATCH3
+308     @DIV3232.@SCRATCH3
+309     @DIV3232.@SCRATCH4
+30A     @ADDFF.@SCRATCH1
+30A     @DIVFF.@SCRATCH1
+30A     @DIV3232.@SCRATCH5
+30A     @FLT.@SCRATCH1
+30B     @ADDFF.@SCRATCH2
+30B     @DIVFF.@SCRATCH2
+30B     @FLT.@SCRATCH2
+30C     @ADDFF.@SCRATCH3
+30C     @DIVFF.@SCRATCH3
+30D     @ADDFF.@SCRATCH4
+30D     @DIVFF.@SCRATCH4
+30E     @ADDFF.@SCRATCH5
+30E     @DIVFF.@SCRATCH5
+30F     @ADDFF.@SCRATCH6
+30F     @DIVFF.@SCRATCH6
+310     @ADDFF.@SCRATCH7
+311     @ADDFF.@SCRATCH8
+316     @PUTCHAR_1_.P1
+316     RDA_isr.@SCRATCH1
+317     RDA_isr.@SCRATCH2
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @READ_PACKED_MEMORY.P4
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0000A2  timer1_isr
+0000C0  @PUTCHAR_1_
+000112  RDA_isr
+000142  @const993.call
+000154  @const995.call
+000162  @const1006.call
+00016E  @const1007.call
+00017A  @const1008.call
+000190  @const1009.call
+00019E  @const1026.call
+0001B0  @const1027.call
+0001C4  @const1028.call
+0001CA  @const1030.call
+0001E0  @const1032.call
+0001EE  @const1033.call
+0001F8  @const1034.call
+000208  @const1035.call
+000226  @const1036.call
+000234  @const1037.call
+00024E  @const1038.call
+00025C  @const1039.call
+000266  @const1040.call
+000274  @const1041.call
+000284  @const1042.call
+000290  @const1043.call
+00029C  @const1044.call
+00030A  @const1055.call
+00031A  @const1056.call
+00032E  @const1057.call
+000348  @const1058.call
+000358  @const1059.call
+000362  @const1060.call
+000370  @const1071.call
+000384  @delay_ms1
+0003AE  @PSTRINGC_647
+0003DA  @PSTRINGC_9600_31766_31767
+0003FC  @PUTCHARI_BIU_2
+000404  erase_buffer_sim
+000426  batsim808
+000552  @delay_us1
+000578  onewire_reset
+0005AA  onewire_write
+0005EE  onewire_read
+000636  @SITOF
+000688  @DIVFF
+0007E6  ds1820_read
+0008A8  @SFTOI
+0008E4  @ITOF
+00091A  @FLT
+000996  @ADDFF
+000C0E  @MULFF
+000D30  readPh
+00105A  readturb
+0010FC  readTds
+001AD8  readSensor
+001B5A  @PSTRINGCN_647
+001B90  @FTOSD
+001BD8  @DIV3232
+001C70  @PRINTF_L32D_647FPFPF
+001E5A  @SPRINTF
+001E7A  @PSTRINGCN_1046
+001EA2  @PRINTF_L32D_1046FPFPF
+00204E  @PSTRINGR_647
+002082  @PSTRINGR_9600_31766_31767
+0020AA  sendData
+002334  MAIN
+002334  @cinit1
+0023B2  @cinit2
+0136  StrtoulGO
+0136  StrtolGO
+
+Project Directory:
+    E:\php\CODE (1)\CODE\New folder\
+
+Project Files:
+    main.c                                                  [24-Dec-18 00:54  CRC=9941DC88]
+    main.h                                                  [22-Dec-18 11:11  CRC=0A07E029]
+    C:\Program Files\PICC\Devices\18F4550.h                 [12-Nov-13 14:35  CRC=5337E248]
+    C:\Program Files\PICC\Drivers\stdlib.h                  [08-Jun-11 14:39  CRC=0B6669CF]
+    C:\Program Files\PICC\Drivers\stddef.h                  [16-Jul-10 09:27  CRC=897CEC6C]
+    C:\Program Files\PICC\Drivers\string.h                  [14-Jul-11 10:13  CRC=23EDEC8F]
+    C:\Program Files\PICC\Drivers\ctype.h                   [03-Jan-08 13:55  CRC=2D1F019F]
+    TV_1wire.c                                              [20-Dec-18 19:07  CRC=08599316]
+    TV_ds1820.c                                             [30-Mar-18 01:16  CRC=B2AF9CA6]
+
+Source signature=4A2AAFC4
+
+Units:
+    main (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    XREF file:   main.xsym
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX32:      main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.ccspjt
+    Call Tree:   main.tre
+    Statistics:  main.STA
