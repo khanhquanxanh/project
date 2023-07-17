@@ -383,15 +383,7 @@ biendem=0;
 }
 void sendSMS(char *s)
 {
-//!   disable_interrupts(GLOBAL);
-//!   eeprom_read_string(0x00,phone,11);   
-//!   enable_interrupts(GLOBAL);
-//!   if ((phone[10]<48)||(phone[10]>127)) 
-//!   {
-//!      phone[10]=0x22;   //"\""
-//!      phone[11]=0x00;   // nul
-//!   }
-//!   else phone[11]=0x22; //"\""
+
    
    char ch[25]="";
    phone = "0343366305\"";
